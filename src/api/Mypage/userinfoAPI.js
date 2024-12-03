@@ -53,10 +53,11 @@ export const getUserId = async () => {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
-            credentials: 'include',
         });
 
         console.log('Response status:', response.status);
+
+        // 서버 응답 확인
         const responseData = await response.json();
         console.log('Response data:', responseData);
 
