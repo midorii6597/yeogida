@@ -1,5 +1,3 @@
-import { useAuth } from '../context/AuthContext';
-
 const BASE_URL = 'https://www.yeogida.net';
 
 /* 비밀번호를 통한 본인 확인 */
@@ -11,6 +9,7 @@ export const checkPassword = async (data) => {
         },
         credentials: 'include',
         body: JSON.stringify({ password: data.passwordConfirm }), // 요청 본문에 password 전달
+        // credentials: 'include' // 세션 기반 인증을 위한 쿠키 포함
     });
 
     if (response.ok) { // 응답 상태 코드 확인
@@ -28,30 +27,18 @@ export const checkPassword = async (data) => {
 
 /* 개인정보 조회 */
 export const getUserData = async () => {
-    const { token } = useAuth(); // AuthContext에서 토큰 가져오기
-
-    if (!token) {
-        throw new Error('토큰이 없습니다. 로그인이 필요합니다.');
-    }
-
     try {
         const response = await fetch(`${BASE_URL}/mypage/account`, {
-            headers: {
-                Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 포함
-                'Content-Type': 'application/json',
-            },
             credentials: 'include',
         });
-
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-
         const data = await response.json();
-        return data[0]; // 사용자 데이터 반환
+        return data[0]; // 첫 번째 사용자 데이터 반환
     } catch (error) {
         console.error('Error "getUserData":', error);
-        throw error;
+        throw error; // 에러 발생 시 상위로 전달
     }
 };
 
@@ -117,7 +104,7 @@ export const updateUserData = async (updatedData) => {
 /* (회원가입용) 메일로 인증번호 전송 API */
 export const sendEmailVerificationCode = async (email, userName) => {
     try {
-        const response = await fetch(`${BASE_URL}/users/signup-sendnum`, {
+        const response = await fetch('/users/signup-sendnum', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -149,7 +136,7 @@ export const sendEmailVerificationCode = async (email, userName) => {
 /* 인증번호 검증 API */
 export const verifyCertificationCode = async (email, certificationNum) => {
     try {
-        const response = await fetch(`${BASE_URL}/users/verify-number`, {
+        const response = await fetch('/users/verify-number', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
