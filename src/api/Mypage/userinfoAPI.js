@@ -43,32 +43,32 @@ export const getUserData = async () => {
 };
 
 /* 사용자 아이디 */
-export const getUserId = async () => {
-    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+const fetchUserId = async () => {
+    const token = localStorage.getItem('token');
     console.log('Token:', token);
-
-    if (!token) {
-        console.error('토큰이 없습니다!');
-        return null;
-    }
 
     try {
         const response = await fetch(`${BASE_URL}/mypage/account`, {
+            method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`, // 토큰을 Authorization 헤더에 포함
+                'Authorization': `Bearer ${token}`,
             },
             credentials: 'include',
         });
+
+        console.log('Response status:', response.status);
+        const responseData = await response.json();
+        console.log('Response data:', responseData);
 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();  // 응답을 JSON으로 처리
-        return data.id;  // 첫 번째 사용자 데이터에서 아이디 반환
+        return responseData.id;
     } catch (error) {
-        console.error('Error "getUserId":', error);
-        throw error;
+        console.error('Error fetching user ID:', error);
+        alert('인증 실패: 다시 로그인해주세요.');
+        return null;
     }
 };
 
