@@ -43,7 +43,7 @@ export const getUserData = async () => {
 };
 
 /* 사용자 아이디 */
-const fetchUserId = async () => {
+export const getUserId = async () => {
     const token = localStorage.getItem('token');
     console.log('Token:', token);
 
