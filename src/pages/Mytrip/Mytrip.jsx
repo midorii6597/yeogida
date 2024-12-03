@@ -339,10 +339,10 @@ export default function MyTrip() {
 
     // '내가 만든 일정' 필터링
     const filteredPosts = selectedButton === '내가 만든 일정'
-        ? posts.filter(post => post.user_id === userId)
-        : selectedButton === '공유 받은 일정'
-            ? posts.filter(post => post.user_id !== userId)
-            : posts;
+    ? (Array.isArray(posts) ? posts.filter(post => post.user_id === userId) : [])
+    : selectedButton === '공유 받은 일정'
+        ? (Array.isArray(posts) ? posts.filter(post => post.user_id !== userId) : [])
+        : (Array.isArray(posts) ? posts : []);
 
     const [isOpen, setIsOpen] = useState(false);
 
