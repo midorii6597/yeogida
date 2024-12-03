@@ -86,7 +86,7 @@ const ModalButton = styled.button`
 `;
 
 export default function Newtrip({ closeModal }) {
-    const [sharedOptions, setSharedOptions] = useState([]);
+    const [sharedOptions, setSharedOptions] = useState([{ value: 'none', label: '없음' }]); // api 연결 전 '없음'으로 설정
 
     const [inputs, setInputs] = useState({
         제목: "",
