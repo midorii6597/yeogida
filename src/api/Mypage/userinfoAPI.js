@@ -45,6 +45,7 @@ export const getUserData = async () => {
 /* 사용자 아이디 */
 export const getUserId = async () => {
     const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+    console.log('Token:', token);
 
     if (!token) {
         console.error('토큰이 없습니다!');
