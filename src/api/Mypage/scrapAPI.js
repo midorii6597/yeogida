@@ -4,6 +4,9 @@ const BASE_URL = 'https://www.yeogida.net';
 export const getFolderData = async () => {
     try {
         const response = await fetch(`${BASE_URL}/mypage/scrap`, {
+            headers: {
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
+            },
             credentials: 'include',
         });
         if (!response.ok) {
@@ -24,6 +27,7 @@ export const fetchFolderAdd = async (folderName) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
             },
             credentials: 'include',
             body: JSON.stringify({
@@ -45,6 +49,9 @@ export const fetchFolderDelete = async (folderId) => {
     try {
         const response = await fetch(`${BASE_URL}/mypage/scrap/delete/${folderId}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
+            },
             credentials: 'include',
         });
         if (!response.ok) {
@@ -64,6 +71,7 @@ export const fetchFolderNameUpdate = async (folderId, folderName) => {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
             },
             credentials: 'include',
             body: JSON.stringify({
@@ -84,6 +92,9 @@ export const fetchFolderNameUpdate = async (folderId, folderName) => {
 export const getScrapData = async (folderId) => {
     try {
         const response = await fetch(`${BASE_URL}/mypage/scrap/${folderId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
+            },
             credentials: 'include',
         });
         if (!response.ok) {
@@ -102,6 +113,9 @@ export const fetchScrapDelete = async (folderId, scrapId) => {
     try {
         const response = await fetch(`${BASE_URL}/mypage/scrap/${folderId}/delete/${scrapId}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
+            },
             credentials: 'include',
         });
         if (!response.ok) {
