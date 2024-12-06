@@ -1,6 +1,6 @@
 // 전체, 조건별 여행일정 조회 API
 export const getTrip = async () => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
         console.error('토큰이 없습니다!');
@@ -27,7 +27,7 @@ export const getTrip = async () => {
 
 // 새로운 여행일정 생성 API
 export const createItineraries = async (formData) => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
         console.error('토큰이 없습니다!');
@@ -59,7 +59,7 @@ export const createItineraries = async (formData) => {
 
 // 특정 여행일정 조회 API
 export const getItineraries = async (itinerary_id) => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
         console.error('토큰이 없습니다!');
@@ -86,7 +86,7 @@ export const getItineraries = async (itinerary_id) => {
 
 // 특정 여행일정 수정 API
 export const updateItinerary = async (itineraryId, updatedData) => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
         console.error('토큰이 없습니다!');
@@ -117,7 +117,7 @@ export const updateItinerary = async (itineraryId, updatedData) => {
 
 // 특정 여행일정 삭제 API
 export const deleteItinerary = async (itinerary_id) => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
         console.error('토큰이 없습니다!');
@@ -147,7 +147,7 @@ export const deleteItinerary = async (itinerary_id) => {
 
 // 지도의 장소 검색 API
 export const handleSearch = async (searchQuery) => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
         console.error('토큰이 없습니다!');
