@@ -48,7 +48,7 @@ export const getUserId = async () => {
     console.log('Token:', token);
 
     try {
-        const response = await fetch(`${BASE_URL}/mypage/account`, {
+        const response = await fetch(`https://yeogida.net/mypage/account`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
