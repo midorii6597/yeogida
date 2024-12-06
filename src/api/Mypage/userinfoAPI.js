@@ -27,8 +27,18 @@ export const checkPassword = async (data) => {
 
 /* 개인정보 조회 */
 export const getUserData = async () => {
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        console.error('토큰이 없습니다!');
+        return;
+    }
+
     try {
-        const response = await fetch(`${BASE_URL}/mypage/account`, {
+        const response = await fetch(`https://yeogida.net/mypage/account`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
             credentials: 'include',
         });
         if (!response.ok) {
@@ -44,8 +54,12 @@ export const getUserData = async () => {
 
 /* 사용자 아이디 */
 export const getUserId = async () => {
-    const token = localStorage.getItem('token');
-    console.log('Token:', token);
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        console.error('토큰이 없습니다!');
+        return;
+    }
 
     try {
         const response = await fetch(`https://yeogida.net/mypage/account`, {
@@ -53,6 +67,7 @@ export const getUserId = async () => {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
+            credentials: 'include',
         });
 
         console.log('Response status:', response.status);
