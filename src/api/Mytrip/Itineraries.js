@@ -1,5 +1,5 @@
 // 나의 여행 일정 조회 API
-export const getTrip = async (userId) => {
+export const getTrip = async (userId, sortOrder) => {
     const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
@@ -8,7 +8,7 @@ export const getTrip = async (userId) => {
     }
 
     try {
-        const response = await fetch(`https://yeogida.net/api/itineraries`, {
+        const response = await fetch(`https://yeogida.net/api/itineraries?user_id=${userId}&sort_order=${sortOrder}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
