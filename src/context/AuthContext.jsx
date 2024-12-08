@@ -26,7 +26,6 @@ export function AuthProvider({ children }) {
     const extractUserIdFromToken = (token) => {
         try {
             const payload = JSON.parse(atob(token.split('.')[1])); // JWT 디코딩
-            console.log('Decoded Payload:', payload); // 디코딩된 페이로드 출력
             const userId = payload.user_id || null; // 'user_id' 키로 사용자 ID 추출
             console.log('사용자 아이디:', userId); // 콘솔에 사용자 ID 출력
             return userId;

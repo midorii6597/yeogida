@@ -279,14 +279,13 @@ export default function MyTrip() {
     const offset = (page - 1) * limit;
     const [isListView, setIsListView] = useState(false);
     const [selectedButton, setSelectedButton] = useState('전체일정'); // 선택된 버튼을 추적하는 상태
-    const { user } = useAuth(); // AuthContext에서 user 객체 가져오기
-    const userId = user?.id; // user 객체에서 id 추출
+    const { userId } = useAuth();
     const [sortOrder, setSortOrder] = useState('newest'); // 정렬 상태 추가
     const [showDropdown, setShowDropdown] = useState(false);   
 
     useEffect(() => {
         console.log('현재 userId:', userId); // userId 출력
-        
+
         const fetchTrips = async () => {
             try {
                 const data = await getTrip(sortOrder);

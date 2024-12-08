@@ -148,7 +148,7 @@ const Bell = () => {
     const [hovered, setHovered] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
-    const { user_id } = useAuth();
+    const { userId } = useAuth();
     const [friendRequests, setFriendRequests] = useState([]);
     const [friendRequestCount, setFriendRequestCount] = useState(0);
 
@@ -157,18 +157,18 @@ const Bell = () => {
     };
 
     useEffect(() => {
-        console.log('사용자 아이디:', user_id); // user_id 출력
+        console.log('사용자 아이디:', userId); // user_id 출력
         
         const loadNotifications = async () => {
-            if (!user_id) return; 
-            const alarms = await getUserAlarms(user_id);
+            if (!userId) return; 
+            const alarms = await getUserAlarms(userId);
             if (alarms) {
                 setNotifications(alarms); 
             }
         };
 
         const loadFriendRequests = async () => {
-            if (!user_id) return; 
+            if (!userId) return; 
             try {
                 const requests = await getFriendRequest(); // 친구 요청 목록 조회
                 setFriendRequests(requests); 
@@ -180,7 +180,7 @@ const Bell = () => {
 
         loadNotifications();
         loadFriendRequests(); // 친구 요청 목록도 함께 로드
-    }, [user_id]); // userId가 변경될 때마다 다시 호출
+    }, [userId]); // userId가 변경될 때마다 다시 호출
 
     useEffect(() => {
         let timeout;
