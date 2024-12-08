@@ -26,7 +26,9 @@ export function AuthProvider({ children }) {
     const extractUserIdFromToken = (token) => {
         try {
             const payload = JSON.parse(atob(token.split('.')[1])); // JWT 디코딩
-            return payload.userId || null; // 사용자 ID 추출
+            const userId = payload.userId || null; // 사용자 ID 추출
+            console.log('userId:', userId); // 콘솔에 사용자 ID 출력
+            return userId;
         } catch (error) {
             console.warn('토큰에서 사용자 ID 추출 실패:', error);
             return null;
