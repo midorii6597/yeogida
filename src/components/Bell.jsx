@@ -157,13 +157,26 @@ const Bell = () => {
     };
 
     useEffect(() => {
-        console.log('사용자 아이디:', userId); // user_id 출력
+        console.log('사용자 아이디:', userId); // userId 출력
         
         const loadNotifications = async () => {
             if (!userId) return; 
-            const alarms = await getUserAlarms(userId);
-            if (alarms) {
-                setNotifications(alarms); 
+            
+            try {
+                const alarms = await getUserAlarms(userId);
+                if (alarms) {
+                    setNotifications(alarms); // 알림이 있으면 설정
+                } else {
+                    setNotifications([]); // 알림이 없으면 빈 배열로 설정
+                }
+            } catch (error) {
+                if (error.response && error.response.status === 404) {
+                    console.log("알림이 없습니다."); // 404 오류가 발생했을 때 처리
+                    setNotifications([]);
+                } else {
+                    console.error("알림 조회 실패:", error);
+                    setNotifications([]);
+                }
             }
         };
 
@@ -229,7 +242,6 @@ const Bell = () => {
         }
     };
     
-
     return (
         <BellWrapper
             onMouseEnter={() => setHovered(true)} 

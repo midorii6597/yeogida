@@ -288,7 +288,7 @@ export default function MyTrip() {
 
         const fetchTrips = async () => {
             try {
-                const data = await getTrip(sortOrder);
+                const data = await getTrip(userId, sortOrder);
                 setPosts(data);
             } catch (error) {
                 console.error('Error fetching trips:', error);
