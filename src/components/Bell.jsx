@@ -7,8 +7,8 @@ import { createAlarm,
     deleteAlarm
  } from '../api/Alarm/AlaramApi';
  import { createItineraries } from '../api/Mytrip/Itineraries';
- import { getUserId } from '../api/Mypage/userinfoAPI';
  import { getFriendRequest } from '../api/Mypage/friendAPI';
+ import { useAuth } from '../context/AuthContext';
 
 const BellWrapper = styled.div`
     width: 24px;
@@ -148,26 +148,14 @@ const Bell = () => {
     const [hovered, setHovered] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
-    const [userId, setUserId] = useState(null); // 사용자 ID
+    const { user } = useAuth(); // AuthContext에서 user 객체 가져오기
+    const userId = user?.id; // user 객체에서 id 추출
     const [friendRequests, setFriendRequests] = useState([]);
     const [friendRequestCount, setFriendRequestCount] = useState(0);
 
     const handleBellClick = () => {
         setIsDropdownOpen(!isDropdownOpen); // 드롭다운 열기/닫기 토글
     };
-
-    useEffect(() => {
-        const fetchUserId = async () => {
-            try {
-                const id = await getUserId();
-                setUserId(id); // 사용자 ID 설정
-            } catch (error) {
-                console.error('Failed to fetch user ID:', error);
-            }
-        };
-
-        fetchUserId();
-    }, []);
 
     useEffect(() => {
         const loadNotifications = async () => {

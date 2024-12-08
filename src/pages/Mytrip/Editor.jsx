@@ -6,9 +6,9 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import styled from 'styled-components';
 import YesNoModal from '../../components/YesNoModal';
 import Map from '../../components/Map'
-import { getUserId } from '../../api/Mypage/userinfoAPI';
 import { createItineraries } from '../../api/Mytrip/Itineraries';
 import { usePlaces } from './PlaceContext';
+import { useAuth } from '../../context/AuthContext';
 
 const ButtonContainer = styled.div`
     display: flex;
@@ -185,7 +185,8 @@ export default function Editor({ onChange = () => { } }) {
   const [modalMessage, setModalMessage] = useState(''); // 모달에 표시할 메시지
 
   const [itineraryId, setItineraryId] = useState(0);  // itinerary_id 상태
-  const [userId, setUserId] = useState(null); // 사용자 ID
+  const { user } = useAuth(); // AuthContext에서 user 객체 가져오기
+  const userId = user?.id; // user 객체에서 id 추출
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
@@ -247,19 +248,6 @@ export default function Editor({ onChange = () => { } }) {
       return updated;
     });
   };
-
-  useEffect(() => {
-    const fetchUserId = async () => {
-      try {
-          const id = await getUserId();
-          setUserId(id); // 상태로 아이디 설정
-      } catch (error) {
-          console.error('Failed to fetch user ID:', error);
-      }
-  };
-
-    fetchUserId();
-  }, []);
 
   // 구현 예정
   const handleEditClick = () => {
