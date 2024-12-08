@@ -8,6 +8,7 @@ import Card from '../../components/Card';
 import Tags from '../../components/Tags';
 import { getTrip, getItineraries } from '../../api/Mytrip/Itineraries';
 import { getUserId } from '../../api/Mypage/userinfoAPI';
+import { useAuth } from '../../context/AuthContext';
 
 const MyTripContainer = styled.div`
     display: flex;
@@ -279,7 +280,7 @@ export default function MyTrip() {
     const offset = (page - 1) * limit;
     const [isListView, setIsListView] = useState(false);
     const [selectedButton, setSelectedButton] = useState('전체일정'); // 선택된 버튼을 추적하는 상태
-    const [userId, setUserId] = useState(null);
+    const { userId } = useAuth();   // AuthContext에서 userId 가져오기
     const [sortOrder, setSortOrder] = useState('newest'); // 정렬 상태 추가
     const [showDropdown, setShowDropdown] = useState(false);   
 
