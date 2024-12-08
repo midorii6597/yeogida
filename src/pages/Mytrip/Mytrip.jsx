@@ -285,6 +285,8 @@ export default function MyTrip() {
     const [showDropdown, setShowDropdown] = useState(false);   
 
     useEffect(() => {
+        console.log('현재 userId:', userId); // userId 출력
+        
         const fetchTrips = async () => {
             try {
                 const data = await getTrip(sortOrder);
