@@ -7,7 +7,6 @@ import Newtrip from './Newtrip';
 import Card from '../../components/Card';
 import Tags from '../../components/Tags';
 import { getTrip, getItineraries } from '../../api/Mytrip/Itineraries';
-import { getUserId } from '../../api/Mypage/userinfoAPI';
 import { useAuth } from '../../context/AuthContext';
 
 const MyTripContainer = styled.div`
@@ -280,7 +279,8 @@ export default function MyTrip() {
     const offset = (page - 1) * limit;
     const [isListView, setIsListView] = useState(false);
     const [selectedButton, setSelectedButton] = useState('전체일정'); // 선택된 버튼을 추적하는 상태
-    const { userId } = useAuth();   // AuthContext에서 userId 가져오기
+    const { user } = useAuth(); // AuthContext에서 user 객체 가져오기
+    const userId = user?.id; // user 객체에서 id 추출
     const [sortOrder, setSortOrder] = useState('newest'); // 정렬 상태 추가
     const [showDropdown, setShowDropdown] = useState(false);   
 
@@ -296,19 +296,6 @@ export default function MyTrip() {
     
         fetchTrips();
     }, [sortOrder]);
-    
-    useEffect(() => {
-        const fetchUserId = async () => {
-            try {
-                const id = await getUserId();
-                setUserId(id);
-            } catch (error) {
-                console.error('Failed to fetch user ID:', error);
-            }
-        };
-    
-        fetchUserId(); // 유저 ID 호출
-    }, []);
     
     const handleSortChange = (order) => {
         setSortOrder(order);
