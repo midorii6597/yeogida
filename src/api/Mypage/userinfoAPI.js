@@ -17,7 +17,6 @@ export const checkPassword = async (data) => {
         },
         credentials: 'include',
         body: JSON.stringify({ password: data.passwordConfirm }), // 요청 본문에 password 전달
-        // credentials: 'include' // 세션 기반 인증을 위한 쿠키 포함
     });
 
     if (response.ok) { // 응답 상태 코드 확인
@@ -41,6 +40,8 @@ export const getUserData = async () => {
         console.error('토큰이 없습니다!');
         return;
     }
+
+    console.log('(마이페이지)현재 토큰:', token);
 
     try {
         const response = await fetch(`https://yeogida.net/mypage/account`, {
