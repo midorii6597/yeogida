@@ -7,6 +7,7 @@ import Modal from '../components/CommonModal';
 import defaultProfileImg from './img/card_img.png';
 import { useNavigate } from 'react-router-dom';
 import { checkPassword, getUserData, updateUserData,sendEmailVerificationCode, verifyCertificationCode } from '../api/Mypage/userinfoAPI';
+import { useAuth } from '../../context/AuthContext';
 
 const HeaderStyle = styled.div`
     margin-top: 150px;
@@ -869,9 +870,12 @@ function AfterCheck ({ userData }) {
 export default function UserInfo() {
     const [isBtnClicked, setIsBtnClicked] = useState(false);
     const [userData, setUserData] = useState(null);
+    const { userId } = useAuth();
 
     // 컴포넌트 마운트 시 사용자 데이터를 가져오는 함수
     useEffect(() => {
+        console.log('현재 userId:', userId); // userId 출력
+
         const fetchUserData = async () => {
             try {
                 const data = await getUserData(); // 분리된 API 호출 함수 사용

@@ -36,6 +36,7 @@ export const checkPassword = async (data) => {
 /* 개인정보 조회 */
 export const getUserData = async () => {
     const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+    console.log(token);
 
     if (!token) {
         console.error('토큰이 없습니다!');
@@ -153,7 +154,7 @@ export const verifyCertificationCode = async (email, certificationNum) => {
             headers: { 
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
-             },
+            },
             credentials: 'include',
             body: JSON.stringify({
                 email: email,
