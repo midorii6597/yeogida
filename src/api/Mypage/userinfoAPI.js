@@ -28,7 +28,7 @@ export const checkPassword = async (data) => {
 
 /* 개인정보 조회 */
 export const getUserData = async () => {
-    const { token } = useAuth(); // AuthContext에서 토큰 가져오기
+    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
         throw new Error('토큰이 없습니다. 로그인이 필요합니다.');
@@ -37,7 +37,7 @@ export const getUserData = async () => {
     try {
         const response = await fetch(`${BASE_URL}/mypage/account`, {
             headers: {
-                Authorization: `Bearer ${token}`, // Authorization 헤더에 토큰 포함
+                'Authorization': `Bearer ${token}`, // Authorization 헤더에 토큰 포함
                 'Content-Type': 'application/json',
             },
             credentials: 'include',
@@ -48,7 +48,7 @@ export const getUserData = async () => {
         }
 
         const data = await response.json();
-        return data[0]; // 사용자 데이터 반환
+        return data; // 사용자 데이터 반환
     } catch (error) {
         console.error('Error "getUserData":', error);
         throw error;
