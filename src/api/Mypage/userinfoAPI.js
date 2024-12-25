@@ -40,8 +40,6 @@ export const getUserData = async () => {
     if (!token) {
         console.error('토큰이 없습니다!');
         return;
-    } else {
-        console.log('현재 토큰 : ', token);
     }
 
     try {

@@ -874,7 +874,7 @@ export default function UserInfo() {
 
     // 컴포넌트 마운트 시 사용자 데이터를 가져오는 함수
     useEffect(() => {
-        console.log('현재 userId:', userId); // userId 출력
+        console.log('(회원정보관리)현재 userId:', userId); // userId 출력
 
         const fetchUserData = async () => {
             try {
