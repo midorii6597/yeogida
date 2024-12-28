@@ -15,8 +15,10 @@ export const checkPassword = async (data) => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
         },
-        credentials: 'include',
-        body: JSON.stringify({ password: data.passwordConfirm }), // 요청 본문에 password 전달
+        body: JSON.stringify({
+            password: data.passwordConfirm,
+            credentials: 'include',
+        }),
     });
 
     if (response.ok) { // 응답 상태 코드 확인
@@ -54,7 +56,7 @@ export const getUserData = async () => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        return data[0]; // 첫 번째 사용자 데이터 반환
+        return data; // 첫 번째 사용자 데이터 반환
     } catch (error) {
         console.error('Error "getUserData":', error);
         throw error; // 에러 발생 시 상위로 전달
