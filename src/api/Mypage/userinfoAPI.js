@@ -15,9 +15,9 @@ export const checkPassword = async (data) => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
         },
+        credentials: 'include',
         body: JSON.stringify({
             password: data.passwordConfirm,
-            credentials: 'include',
         }),
     });
 
@@ -50,7 +50,7 @@ export const getUserData = async () => {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
-            credentials: 'include',
+            withCredentials: true,
         });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
