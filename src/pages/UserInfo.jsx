@@ -187,6 +187,7 @@ const userinfoData = styled.div`
 function BeforeCheck ({ btnClick, userInfo }) {
     const { register, handleSubmit, formState: { errors }, setError } = useForm();
     const [profileImg, setProfileImg] = useState(userInfo?.profilephoto || defaultProfileImg); // 유저 프로필 사진
+    const [profileName, setProfileName] = useState(userInfo?.name || 'profileName'); // 유저 이름
     // const [isSubmitted, setIsSubmitted] = useState(false); // 확인 버튼을 눌렀는지 확인하는 상태
 
     // '비밀번호를 통한 본인 확인' API 연결
@@ -229,7 +230,7 @@ function BeforeCheck ({ btnClick, userInfo }) {
             {/* 프로필 */}
             <MyProfile>
                 <MyProfileImage src={profileImg} />
-                <MyProfileName>seoyoung</MyProfileName>
+                <MyProfileName>{profileName}</MyProfileName>
             </MyProfile>
 
             {/* 비밀번호 입력란 */}
