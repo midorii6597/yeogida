@@ -16,8 +16,9 @@ export const checkPassword = async (data) => {
             'Authorization': `Bearer ${token}`,
         },
         credentials: 'include',
-        body: JSON.stringify({ password: data.passwordConfirm }), // 요청 본문에 password 전달
-        // credentials: 'include' // 세션 기반 인증을 위한 쿠키 포함
+        body: JSON.stringify({
+            password: data.passwordConfirm,
+        }),
     });
 
     if (response.ok) { // 응답 상태 코드 확인
@@ -42,23 +43,45 @@ export const getUserData = async (userId) => {
         return;
     }
 
+    console.log('(마이페이지) 현재 토큰:', token);
+
     try {
-        const response = await fetch(`https://yeogida.net/mypage/account`, {
+        // 요청 전 디버깅 정보 출력
+        console.log('Sending request to API...');
+        console.log('Headers:', {
+            'Authorization': `Bearer ${token}`,
+        });
+
+        // API 호출
+        const response = await fetch(`${BASE_URL}/mypage/account`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
             credentials: 'include',
         });
+
+        // 응답 상태와 헤더 확인
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+
+        // 응답 본문 확인 (JSON으로 파싱하기 전에 원문 확인)
+        const responseText = await response.text();
+        console.log('Response body:', responseText);
+
+        // 응답이 성공적이지 않은 경우 오류 처리
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response.json();
-        return data[0]; // 첫 번째 사용자 데이터 반환
+
+        // JSON 파싱 후 데이터 반환
+        const data = JSON.parse(responseText);
+        return data; // 사용자 데이터 반환
     } catch (error) {
         console.error('Error "getUserData":', error);
         throw error; // 에러 발생 시 상위로 전달
     }
 };
+
 
 /* 개인정보 수정 */
 export const updateUserData = async (updatedData) => {
@@ -153,7 +176,7 @@ export const verifyCertificationCode = async (email, certificationNum) => {
             headers: { 
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
-             },
+            },
             credentials: 'include',
             body: JSON.stringify({
                 email: email,
