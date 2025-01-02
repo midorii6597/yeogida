@@ -34,7 +34,7 @@ export const checkPassword = async (data) => {
 };
 
 /* 개인정보 조회 */
-export const getUserData = async () => {
+export const getUserData = async (userId) => {
     const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
