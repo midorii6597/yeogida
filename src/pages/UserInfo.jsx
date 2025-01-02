@@ -193,7 +193,13 @@ function BeforeCheck ({ btnClick, userInfo }) {
     // '비밀번호를 통한 본인 확인' API 연결
     const handleCheckPassword = async (data) => {
         try {
-            const response = await checkPassword(data);
+            const payload = {
+                userId: userInfo?.id, // 사용자 ID 전달
+                passwordConfirm: data.passwordConfirm, // 입력한 비밀번호
+            };
+
+            const response = await checkPassword(payload);
+            
             if (response.success) { // 서버의 응답에 따라 조건 처리
                 btnClick(true); // 비밀번호가 맞으면 개인정보 수정 컴포넌트로 이동
             } else {

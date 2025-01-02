@@ -17,6 +17,7 @@ export const checkPassword = async (data) => {
         },
         credentials: 'include',
         body: JSON.stringify({
+            user_id: data.userId,
             password: data.passwordConfirm,
         }),
     });
