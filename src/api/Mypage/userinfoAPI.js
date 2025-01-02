@@ -53,7 +53,7 @@ export const getUserData = async (userId) => {
         });
 
         // API 호출
-        const response = await fetch(`https://yeogida.net/mypage/account`, {
+        const response = await fetch(`https://yeogida.net/mypage/account?user_id=${userId}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
