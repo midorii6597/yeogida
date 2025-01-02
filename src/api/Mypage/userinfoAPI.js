@@ -9,17 +9,16 @@ export const checkPassword = async (data) => {
         return;
     }
     
-    const response = await fetch(`${BASE_URL}/mypage/account`, {
+    const response = await fetch(`https://yeogida.net/mypage/account`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
         },
-        credentials: 'include',
         body: JSON.stringify({
-            user_id: data.userId,
             password: data.passwordConfirm,
         }),
+        credentials: 'include',
     });
 
     if (response.ok) { // 응답 상태 코드 확인
@@ -36,7 +35,7 @@ export const checkPassword = async (data) => {
 };
 
 /* 개인정보 조회 */
-export const getUserData = async (userId) => {
+export const getUserData = async () => {
     const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
@@ -54,12 +53,12 @@ export const getUserData = async (userId) => {
         });
 
         // API 호출
-        const response = await fetch(`https://yeogida.net/mypage/account?user_id=${userId}`, {
+        const response = await fetch('https://yeogida.net/mypage/account', {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
-            credentials: 'include',
+            credentials: 'include', // 쿠키 포함 여부
         });
 
         // 응답 상태와 헤더 확인
@@ -72,6 +71,11 @@ export const getUserData = async (userId) => {
 
         // 응답이 성공적이지 않은 경우 오류 처리
         if (!response.ok) {
+            // 401 Unauthorized 에러의 경우 상세 메시지 처리
+            if (response.status === 401) {
+                const errorData = JSON.parse(responseText);
+                console.error('인증 실패:', errorData.message);
+            }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 

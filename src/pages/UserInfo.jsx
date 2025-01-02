@@ -193,13 +193,8 @@ function BeforeCheck ({ btnClick, userInfo }) {
     // '비밀번호를 통한 본인 확인' API 연결
     const handleCheckPassword = async (data) => {
         try {
-            const payload = {
-                userId: userInfo?.id, // 사용자 ID 전달
-                passwordConfirm: data.passwordConfirm, // 입력한 비밀번호
-            };
+            const response = await checkPassword(data);
 
-            const response = await checkPassword(payload);
-            
             if (response.success) { // 서버의 응답에 따라 조건 처리
                 btnClick(true); // 비밀번호가 맞으면 개인정보 수정 컴포넌트로 이동
             } else {
@@ -885,7 +880,7 @@ export default function UserInfo() {
 
         const fetchUserData = async () => {
             try {
-                const data = await getUserData(userId); // 분리된 API 호출 함수 사용
+                const data = await getUserData(); // 분리된 API 호출 함수 사용
                 console.log('Fetched user data:', data);
                 setUserData(data); // 사용자 데이터로 설정
             } catch (error) {
