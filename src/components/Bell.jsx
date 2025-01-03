@@ -183,11 +183,13 @@ const Bell = () => {
         const loadFriendRequests = async () => {
             if (!userId) return; 
             try {
-                const requests = await getFriendRequest(); // 친구 요청 목록 조회
+                const requests = await getFriendRequest(userId); // 친구 요청 목록 조회
                 setFriendRequests(requests); 
                 setFriendRequestCount(requests.length); // 친구 요청 개수 설정
             } catch (error) {
                 console.error('친구 요청을 가져오는 중 오류 발생:', error);
+                setFriendRequests([]);
+                setFriendRequestCount(0);
             }
         };
 

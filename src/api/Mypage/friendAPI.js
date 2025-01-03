@@ -58,7 +58,7 @@ export const deleteFriend = async (friendId) => {
 };
 
 /* 친구 요청 목록 조회 */
-export const getFriendRequest = async () => {
+export const getFriendRequest = async (userId) => {
     const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
@@ -67,7 +67,7 @@ export const getFriendRequest = async () => {
     }
 
     try {
-        const res = await fetch(`${BASE_URL}/mypage/friend/friendrequest`, {
+        const res = await fetch(`https://yeogida.net/mypage/friend/friendrequest?userId=${userId}`, {
             headers: {
                 'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
             },
