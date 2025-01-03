@@ -163,7 +163,7 @@ const Bell = () => {
             if (!userId) return; 
             
             try {
-                const alarms = await getUserAlarms(userId);
+                const alarms = await getUserAlarms();
                 if (alarms) {
                     setNotifications(alarms); // 알림이 있으면 설정
                 } else {
