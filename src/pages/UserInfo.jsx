@@ -7,7 +7,7 @@ import Modal from '../components/CommonModal';
 import defaultProfileImg from './img/card_img.png';
 import { useNavigate } from 'react-router-dom';
 import { checkPassword, getUserData, updateUserData,sendEmailVerificationCode, verifyCertificationCode } from '../api/Mypage/userinfoAPI';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../context/AuthContext'
 
 const HeaderStyle = styled.div`
     margin-top: 150px;
