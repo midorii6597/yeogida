@@ -163,7 +163,7 @@ const Bell = () => {
             if (!userId) return; 
             
             try {
-                const alarms = await getUserAlarms();
+                const alarms = await getUserAlarms(userId);
                 if (alarms) {
                     setNotifications(alarms); // 알림이 있으면 설정
                 } else {
@@ -183,7 +183,7 @@ const Bell = () => {
         const loadFriendRequests = async () => {
             if (!userId) return; 
             try {
-                const requests = await getFriendRequest(userId); // 친구 요청 목록 조회
+                const requests = await getFriendRequest(); // 친구 요청 목록 조회
                 setFriendRequests(requests); 
                 setFriendRequestCount(requests.length); // 친구 요청 개수 설정
             } catch (error) {
