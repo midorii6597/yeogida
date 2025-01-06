@@ -21,6 +21,11 @@ export const checkPassword = async (data) => {
         credentials: 'include',
     });
 
+    console.log('Response status:', response.status);
+    console.log('Response body:', await response.text());
+    console.log('Password:', data.passwordConfirm);
+
+
     if (response.ok) { // 응답 상태 코드 확인
         try {
             return await response.json(); // 응답이 JSON인지 확인
