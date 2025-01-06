@@ -46,7 +46,7 @@ const MyProfileName = styled.div`
 `;
 
 const CheckPassword = styled.div`
-    margin-left: 66px;
+    // margin-left: 66px;
     // height: 222px;
     display: flex;
     flex-direction: column;
@@ -184,7 +184,7 @@ const userinfoData = styled.div`
 `;
 
 // ----------비밀번호 확인 전 Component----------
-function BeforeCheck ({ btnClick, userInfo }) {
+function BeforeCheck ( btnClick ) {
     const { register, handleSubmit, formState: { errors }, setError } = useForm();
     // const [profileImg, setProfileImg] = useState(userInfo?.profilephoto || defaultProfileImg); // 유저 프로필 사진
     // const [profileName, setProfileName] = useState(userInfo?.name || 'profileName'); // 유저 이름
@@ -862,22 +862,22 @@ export default function UserInfo() {
     const [userData, setUserData] = useState(null);
     const { userId } = useAuth();
 
-    // 컴포넌트 마운트 시 사용자 데이터를 가져오는 함수
-    useEffect(() => {
-        console.log('현재 userId:', userId); // userId 출력
+    // 비밀번호 확인 후 사용자 데이터를 가져오는 함수
+    const fetchUserData = async () => {
+        try {
+            const data = await getUserData(); // 사용자 데이터를 가져오는 API 호출
+            console.log('Fetched user data:', data);
+            setUserData(data); // 사용자 데이터로 설정
+        } catch (error) {
+            console.error('Error "fetchUserData":', error);
+        }
+    };
 
-        const fetchUserData = async () => {
-            try {
-                const data = await getUserData(); // 분리된 API 호출 함수 사용
-                console.log('Fetched user data:', data);
-                setUserData(data); // 사용자 데이터로 설정
-            } catch (error) {
-                console.error('Error "fetchUserData":', error);
-            }
-        };
-
-        fetchUserData();
-    }, []); // 컴포넌트가 마운트될 때 한 번만 실행
+    // 비밀번호 확인이 실행됐는지 확인
+    const handlePasswordCheckSuccess = () => {
+        setIsBtnClicked(true); // 비밀번호 확인 상태 업데이트
+        fetchUserData(); // 사용자 데이터 가져오기
+    };
 
     return (
         <section>
@@ -892,12 +892,10 @@ export default function UserInfo() {
                     
                     {isBtnClicked ? (
                         // 비밀번호 확인 성공하면 개인정보 수정 페이지 렌더링
-                        <AfterCheck 
-                            userData={userData}
-                        />
+                        <AfterCheck userData={userData} />
                     ) : (
                         // 처음에는 비밀번호 확인 페이지 렌더링
-                        <BeforeCheck btnClick={setIsBtnClicked} />
+                        <BeforeCheck btnClick={handlePasswordCheckSuccess} />
                     )}
 
                 </ArticleStyle>
