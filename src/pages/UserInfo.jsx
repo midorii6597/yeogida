@@ -186,8 +186,8 @@ const userinfoData = styled.div`
 // ----------비밀번호 확인 전 Component----------
 function BeforeCheck ({ btnClick, userInfo }) {
     const { register, handleSubmit, formState: { errors }, setError } = useForm();
-    const [profileImg, setProfileImg] = useState(userInfo?.profilephoto || defaultProfileImg); // 유저 프로필 사진
-    const [profileName, setProfileName] = useState(userInfo?.name || 'profileName'); // 유저 이름
+    // const [profileImg, setProfileImg] = useState(userInfo?.profilephoto || defaultProfileImg); // 유저 프로필 사진
+    // const [profileName, setProfileName] = useState(userInfo?.name || 'profileName'); // 유저 이름
     // const [isSubmitted, setIsSubmitted] = useState(false); // 확인 버튼을 눌렀는지 확인하는 상태
 
     // '비밀번호를 통한 본인 확인' API 연결
@@ -211,27 +211,15 @@ function BeforeCheck ({ btnClick, userInfo }) {
         }
     };
 
-    // 임시로 입력한 비밀번호와 myPassword 값을 비교 (403 에러 해결되면 삭제)
-    // const handleCheckPassword = (data) => {
-    //     if (data.passwordConfirm === myPassword) {
-    //         // 비밀번호가 맞으면 개인정보 수정 컴포넌트로 이동
-    //         btnClick(true);
-    //     } else {
-    //         // 비밀번호가 틀리면 에러 메시지 출력
-    //         setError('passwordConfirm', {
-    //             type: 'manual',
-    //             message: '잘못된 비밀번호를 입력했습니다.',
-    //         });
-    //     }
-    // };
-
     return (
         <BeforeCheckStyle>
             {/* 프로필 */}
+            {/*
             <MyProfile>
                 <MyProfileImage src={profileImg} />
                 <MyProfileName>{profileName}</MyProfileName>
             </MyProfile>
+            */}
 
             {/* 비밀번호 입력란 */}
             <CheckPassword>
