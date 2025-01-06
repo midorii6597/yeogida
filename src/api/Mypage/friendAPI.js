@@ -67,7 +67,7 @@ export const getFriendRequest = async () => {
     }
 
     try {
-        const res = await fetch(`${BASE_URL}/mypage/friend/friendrequest`, {
+        const res = await fetch(`https://yeogida.net/mypage/friend/friendrequest`, {
             headers: {
                 'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
             },

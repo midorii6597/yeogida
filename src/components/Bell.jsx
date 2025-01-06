@@ -188,6 +188,8 @@ const Bell = () => {
                 setFriendRequestCount(requests.length); // 친구 요청 개수 설정
             } catch (error) {
                 console.error('친구 요청을 가져오는 중 오류 발생:', error);
+                setFriendRequests([]);
+                setFriendRequestCount(0);
             }
         };
 
