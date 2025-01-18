@@ -2,8 +2,18 @@ const BASE_URL = 'https://www.yeogida.net';
 
 /* 스크랩 폴더 목록 조회 */
 export const getFolderData = async () => {
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        console.error('토큰이 없습니다!');
+        return [];
+    }
+
     try {
         const response = await fetch(`${BASE_URL}/mypage/scrap`, {
+            headers: {
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
+            },
             credentials: 'include',
         });
         if (!response.ok) {
@@ -19,11 +29,19 @@ export const getFolderData = async () => {
 
 /* 스크랩 폴더 생성 */
 export const fetchFolderAdd = async (folderName) => {
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        console.error('토큰이 없습니다!');
+        return [];
+    }
+
     try {
         const response = await fetch(`${BASE_URL}/mypage/scrap/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
             },
             credentials: 'include',
             body: JSON.stringify({
@@ -42,9 +60,19 @@ export const fetchFolderAdd = async (folderName) => {
 
 /* 스크랩 폴더 삭제 */
 export const fetchFolderDelete = async (folderId) => {
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        console.error('토큰이 없습니다!');
+        return [];
+    }
+
     try {
         const response = await fetch(`${BASE_URL}/mypage/scrap/delete/${folderId}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
+            },
             credentials: 'include',
         });
         if (!response.ok) {
@@ -59,11 +87,19 @@ export const fetchFolderDelete = async (folderId) => {
 
 /* 스크랩 폴더 이름 수정 */
 export const fetchFolderNameUpdate = async (folderId, folderName) => {
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        console.error('토큰이 없습니다!');
+        return [];
+    }
+
     try {
         const response = await fetch(`${BASE_URL}/mypage/scrap/rename/${folderId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
             },
             credentials: 'include',
             body: JSON.stringify({
@@ -82,8 +118,18 @@ export const fetchFolderNameUpdate = async (folderId, folderName) => {
 
 /* 특정 스크랩 폴더의 스크랩 목록 조회 */
 export const getScrapData = async (folderId) => {
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        console.error('토큰이 없습니다!');
+        return [];
+    }
+
     try {
         const response = await fetch(`${BASE_URL}/mypage/scrap/${folderId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
+            },
             credentials: 'include',
         });
         if (!response.ok) {
@@ -99,9 +145,19 @@ export const getScrapData = async (folderId) => {
 
 /* 특정 스크랩 삭제 */
 export const fetchScrapDelete = async (folderId, scrapId) => {
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        console.error('토큰이 없습니다!');
+        return [];
+    }
+    
     try {
         const response = await fetch(`${BASE_URL}/mypage/scrap/${folderId}/delete/${scrapId}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`, // 토큰을 헤더에 포함
+            },
             credentials: 'include',
         });
         if (!response.ok) {

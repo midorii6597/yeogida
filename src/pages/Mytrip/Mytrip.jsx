@@ -7,7 +7,7 @@ import Newtrip from './Newtrip';
 import Card from '../../components/Card';
 import Tags from '../../components/Tags';
 import { getTrip, getItineraries } from '../../api/Mytrip/Itineraries';
-import { getUserId } from '../../api/Mypage/userinfoAPI';
+import { useAuth } from '../../context/AuthContext';
 
 const MyTripContainer = styled.div`
     display: flex;
@@ -279,14 +279,16 @@ export default function MyTrip() {
     const offset = (page - 1) * limit;
     const [isListView, setIsListView] = useState(false);
     const [selectedButton, setSelectedButton] = useState('전체일정'); // 선택된 버튼을 추적하는 상태
-    const [userId, setUserId] = useState(null);
+    const { userId } = useAuth();
     const [sortOrder, setSortOrder] = useState('newest'); // 정렬 상태 추가
     const [showDropdown, setShowDropdown] = useState(false);   
 
     useEffect(() => {
+        console.log('현재 userId:', userId); // userId 출력
+
         const fetchTrips = async () => {
             try {
-                const data = await getTrip(sortOrder);
+                const data = await getTrip(userId, sortOrder);
                 setPosts(data);
             } catch (error) {
                 console.error('Error fetching trips:', error);
@@ -295,19 +297,6 @@ export default function MyTrip() {
     
         fetchTrips();
     }, [sortOrder]);
-    
-    useEffect(() => {
-        const fetchUserId = async () => {
-            try {
-                const id = await getUserId();
-                setUserId(id);
-            } catch (error) {
-                console.error('Failed to fetch user ID:', error);
-            }
-        };
-    
-        fetchUserId(); // 유저 ID 호출
-    }, []);
     
     const handleSortChange = (order) => {
         setSortOrder(order);
@@ -339,10 +328,10 @@ export default function MyTrip() {
 
     // '내가 만든 일정' 필터링
     const filteredPosts = selectedButton === '내가 만든 일정'
-        ? posts.filter(post => post.user_id === userId)
-        : selectedButton === '공유 받은 일정'
-            ? posts.filter(post => post.user_id !== userId)
-            : posts;
+    ? (Array.isArray(posts) ? posts.filter(post => post.user_id === userId) : [])
+    : selectedButton === '공유 받은 일정'
+        ? (Array.isArray(posts) ? posts.filter(post => post.user_id !== userId) : [])
+        : (Array.isArray(posts) ? posts : []);
 
     const [isOpen, setIsOpen] = useState(false);
 

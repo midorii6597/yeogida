@@ -8,6 +8,7 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [token, setToken] = useState(null);
+    const [userId, setUserId] = useState(null);
 
     // 토큰 유효성 확인 함수
     const isTokenValid = (token) => {
@@ -21,6 +22,19 @@ export function AuthProvider({ children }) {
         }
     };
 
+    // 토큰에서 사용자 ID 추출 함수
+    const extractUserIdFromToken = (token) => {
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1])); // JWT 디코딩
+            const userId = payload.user_id || null; // 'user_id' 키로 사용자 ID 추출
+            console.log('사용자 아이디:', userId); // 콘솔에 사용자 ID 출력
+            return userId;
+        } catch (error) {
+            console.warn('토큰에서 사용자 ID 추출 실패:', error);
+            return null;
+        }
+    };    
+
     // 초기 상태 확인 (로컬 스토리지에서 토큰 확인)
     useEffect(() => {
         console.log('AuthContext 초기화 중...');
@@ -29,10 +43,12 @@ export function AuthProvider({ children }) {
             console.log('유효한 토큰 발견:', storedToken);
             setIsLoggedIn(true);
             setToken(storedToken);
+            setUserId(extractUserIdFromToken(storedToken));
         } else {
             console.log('토큰 없음 또는 만료됨. 로그아웃 처리.');
             setIsLoggedIn(false);
             setToken(null);
+            setUserId(null);
             localStorage.removeItem('token');
         }
     }, []);
@@ -43,6 +59,7 @@ export function AuthProvider({ children }) {
         localStorage.setItem('token', newToken);
         setToken(newToken);
         setIsLoggedIn(true);
+        setUserId(extractUserIdFromToken(newToken));
     };
 
     // 로그아웃 함수
@@ -55,6 +72,7 @@ export function AuthProvider({ children }) {
                 localStorage.removeItem('token');
                 setToken(null);
                 setIsLoggedIn(false);
+                setUserId(null);
             } else {
                 console.warn('로그아웃 처리 중 서버 오류 발생:', result.error);
             }
@@ -63,11 +81,12 @@ export function AuthProvider({ children }) {
             localStorage.removeItem('token'); // 에러 발생 시에도 클라이언트 상태 초기화
             setToken(null);
             setIsLoggedIn(false);
+            setUserId(null);
         }
     };
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, token, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, token, userId, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -36,19 +36,43 @@ export const getUserData = async () => {
     const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
-        throw new Error('토큰이 없습니다. 로그인이 필요합니다.');
+        console.error('토큰이 없습니다!');
+        return;
     }
 
+    console.log('(마이페이지) 현재 토큰:', token);
+
     try {
-        const response = await fetch(`${BASE_URL}/mypage/account`, {
-            headers: {
-                'Authorization': `Bearer ${token}`, // Authorization 헤더에 토큰 포함
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include',
+        // 요청 전 디버깅 정보 출력
+        console.log('Sending request to API...');
+        console.log('Headers:', {
+            'Authorization': `Bearer ${token}`,
         });
 
+        // API 호출
+        const response = await fetch('https://yeogida.net/mypage/account', {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            credentials: 'include', // 쿠키 포함 여부
+        });
+
+        // 응답 상태와 헤더 확인
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+
+        // 응답 본문 확인 (JSON으로 파싱하기 전에 원문 확인)
+        const responseText = await response.text();
+        console.log('Response body:', responseText);
+
+        // 응답이 성공적이지 않은 경우 오류 처리
         if (!response.ok) {
+            // 401 Unauthorized 에러의 경우 상세 메시지 처리
+            if (response.status === 401) {
+                const errorData = JSON.parse(responseText);
+                console.error('인증 실패:', errorData.message);
+            }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -56,46 +80,25 @@ export const getUserData = async () => {
         return data; // 사용자 데이터 반환
     } catch (error) {
         console.error('Error "getUserData":', error);
-        throw error;
-    }
-};
-
-/* 사용자 아이디 */
-export const getUserId = async () => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
-
-    if (!token) {
-        console.error('토큰이 없습니다!');
-        return null;
-    }
-
-    try {
-        const response = await fetch(`${BASE_URL}/mypage/account`, {
-            headers: {
-                'Authorization': `Bearer ${token}`, // 토큰을 Authorization 헤더에 포함
-            },
-            credentials: 'include',
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();  // 응답을 JSON으로 처리
-        return data.id;  // 첫 번째 사용자 데이터에서 아이디 반환
-    } catch (error) {
-        console.error('Error "getUserId":', error);
-        throw error;
+        throw error; // 에러 발생 시 상위로 전달
     }
 };
 
 /* 개인정보 수정 */
 export const updateUserData = async (updatedData) => {
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        console.error('토큰이 없습니다!');
+        return;
+    }
+
     try {
         const response = await fetch(`${BASE_URL}/mypage/account`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             credentials: 'include',
             body: JSON.stringify(updatedData),
@@ -121,11 +124,19 @@ export const updateUserData = async (updatedData) => {
 
 /* (회원가입용) 메일로 인증번호 전송 API */
 export const sendEmailVerificationCode = async (email, userName) => {
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        console.error('토큰이 없습니다!');
+        return;
+    }
+
     try {
-        const response = await fetch(`${BASE_URL}/users/signup-sendnum`, {
+        const response = await fetch('/users/signup-sendnum', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
             },
             credentials: 'include',
             body: JSON.stringify({
@@ -153,10 +164,20 @@ export const sendEmailVerificationCode = async (email, userName) => {
 
 /* 인증번호 검증 API */
 export const verifyCertificationCode = async (email, certificationNum) => {
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        console.error('토큰이 없습니다!');
+        return;
+    }
+    
     try {
-        const response = await fetch(`${BASE_URL}/users/verify-number`, {
+        const response = await fetch('/users/verify-number', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
             credentials: 'include',
             body: JSON.stringify({
                 email: email,

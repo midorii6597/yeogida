@@ -7,8 +7,8 @@ import { createAlarm,
     deleteAlarm
  } from '../api/Alarm/AlaramApi';
  import { createItineraries } from '../api/Mytrip/Itineraries';
- import { getUserId } from '../api/Mypage/userinfoAPI';
  import { getFriendRequest } from '../api/Mypage/friendAPI';
+ import { useAuth } from '../context/AuthContext';
 
 const BellWrapper = styled.div`
     width: 24px;
@@ -148,7 +148,7 @@ const Bell = () => {
     const [hovered, setHovered] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
-    const [userId, setUserId] = useState(null); // 사용자 ID
+    const { userId } = useAuth();
     const [friendRequests, setFriendRequests] = useState([]);
     const [friendRequestCount, setFriendRequestCount] = useState(0);
 
@@ -157,24 +157,26 @@ const Bell = () => {
     };
 
     useEffect(() => {
-        const fetchUserId = async () => {
-            try {
-                const id = await getUserId();
-                setUserId(id); // 사용자 ID 설정
-            } catch (error) {
-                console.error('Failed to fetch user ID:', error);
-            }
-        };
-
-        fetchUserId();
-    }, []);
-
-    useEffect(() => {
+        console.log('사용자 아이디:', userId); // userId 출력
+        
         const loadNotifications = async () => {
             if (!userId) return; 
-            const alarms = await getUserAlarms(userId);
-            if (alarms) {
-                setNotifications(alarms); 
+            
+            try {
+                const alarms = await getUserAlarms(userId);
+                if (alarms) {
+                    setNotifications(alarms); // 알림이 있으면 설정
+                } else {
+                    setNotifications([]); // 알림이 없으면 빈 배열로 설정
+                }
+            } catch (error) {
+                if (error.response && error.response.status === 404) {
+                    console.log("알림이 없습니다."); // 404 오류가 발생했을 때 처리
+                    setNotifications([]);
+                } else {
+                    console.error("알림 조회 실패:", error);
+                    setNotifications([]);
+                }
             }
         };
 
@@ -186,6 +188,8 @@ const Bell = () => {
                 setFriendRequestCount(requests.length); // 친구 요청 개수 설정
             } catch (error) {
                 console.error('친구 요청을 가져오는 중 오류 발생:', error);
+                setFriendRequests([]);
+                setFriendRequestCount(0);
             }
         };
 
@@ -240,7 +244,6 @@ const Bell = () => {
         }
     };
     
-
     return (
         <BellWrapper
             onMouseEnter={() => setHovered(true)} 

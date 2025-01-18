@@ -1,6 +1,6 @@
 // 새로운 알림 생성 API
 export const createAlarm = async (userId, itineraryId, status) => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
     
     if (!token) {
         console.error('토큰이 없습니다!');
@@ -36,7 +36,7 @@ export const createAlarm = async (userId, itineraryId, status) => {
 
 // 사용자 알림 조회
 export const getUserAlarms = async (userId) => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
         console.error('토큰이 없습니다!');
@@ -59,7 +59,7 @@ export const getUserAlarms = async (userId) => {
 
 // 알림 상태 업데이트
 export const updateAlarm = async (alarmId, status) => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
         console.error('토큰이 없습니다!');
@@ -91,7 +91,7 @@ export const updateAlarm = async (alarmId, status) => {
 
 // 알림 삭제
 export const deleteAlarm = async (alarmId) => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
         console.error('토큰이 없습니다!');
