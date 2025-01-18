@@ -1,12 +1,17 @@
-import { useAuth } from '../context/AuthContext';
-
 const BASE_URL = 'https://www.yeogida.net';
 
 /* 비밀번호를 통한 본인 확인 */
 export const checkPassword = async (data) => {
+    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+
+    if (!token) {
+        throw new Error('토큰이 없습니다. 로그인이 필요합니다.');
+    }
+
     const response = await fetch(`${BASE_URL}/mypage/account`, {
         method: 'POST',
         headers: {
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
         credentials: 'include',
