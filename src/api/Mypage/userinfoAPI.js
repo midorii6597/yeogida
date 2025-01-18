@@ -1,33 +1,44 @@
-const BASE_URL = 'https://www.yeogida.net';
+const BASE_URL = 'https://yeogida.net';
 
 /* 비밀번호를 통한 본인 확인 */
 export const checkPassword = async (data) => {
-    const token = localStorage.getItem('authToken'); // localStorage에서 토큰을 가져옴
+    const token = localStorage.getItem('token'); // localStorage에서 토큰을 가져옴
 
     if (!token) {
-        throw new Error('토큰이 없습니다. 로그인이 필요합니다.');
+        console.error('토큰이 없습니다!');
+        return;
     }
+    
+    try {
+        const response = await fetch(`${BASE_URL}/mypage/account`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // 토큰 전달
+            },
+            body: JSON.stringify({
+                password: data.passwordConfirm, // 요청에 비밀번호 전달
+            }),
+            credentials: 'include',
+        });
 
-    const response = await fetch(`${BASE_URL}/mypage/account`, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ password: data.passwordConfirm }), // 요청 본문에 password 전달
-    });
-
-    if (response.ok) { // 응답 상태 코드 확인
-        try {
-            return await response.json(); // 응답이 JSON인지 확인
-        } catch (err) {
-            const textResponse = await response.text(); // JSON 형식이 아닐 경우 텍스트로 처리
-            return { success: false, message: textResponse };
+        if (response.ok) {
+            // 응답이 성공(200번대)인 경우
+            return await response.json();
+        } else {
+            // 응답이 실패한 경우
+            const errorText = await response.text(); // 텍스트 응답 읽기
+            try {
+                const errorJson = JSON.parse(errorText); // JSON으로 파싱 시도
+                return { success: false, message: errorJson.message || errorText };
+            } catch (err) {
+                // JSON 파싱 실패 시 텍스트 그대로 반환
+                return { success: false, message: errorText };
+            }
         }
-    } else {
-        const textResponse = await response.text();
-        return { success: false, message: textResponse };
+    } catch (err) {
+        console.error('요청 중 에러 발생:', err);
+        return { success: false, message: '네트워크 오류가 발생했습니다.' };
     }
 };
 
